@@ -1,0 +1,30 @@
+/* Tailwind CSS v4 — processed by @tailwindcss/vite */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+/* ============================================= 
+   SCROLL REVEAL — keyframe-based, can't be Tailwind 
+   ============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-d1 { transition-delay: 0.06s; }
+.reveal-d2 { transition-delay: 0.13s; }
+.reveal-d3 { transition-delay: 0.20s; }
+.reveal-d4 { transition-delay: 0.27s; }
+
+/* =============================================
+   GLOBAL KEYFRAMES
+   ============================================= */
+@keyframes ticker-roll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes ticker-stats {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
