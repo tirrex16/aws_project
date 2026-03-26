@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useAdmin, resolveAsset } from '../context/AdminContext.tsx'
 
 interface NavLink { label: string; num: string; id: string | null }
 const navLinks: NavLink[] = [
@@ -13,6 +14,9 @@ export default function Header() {
   const [time, setTime]             = useState('')
   const [mobileOpen, setMobileOpen] = useState(false)
   const [open, setOpen]             = useState(false)
+  const [menuExpanded, setMenuExpanded] = useState(false)
+  const { assets } = useAdmin()
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const update = () => {
@@ -24,6 +28,30 @@ export default function Header() {
     return () => clearInterval(iv)
   }, [])
 
+  useEffect(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+    }
+
+    if (open) {
+      setMenuExpanded(true)
+      return
+    }
+
+    closeTimerRef.current = setTimeout(() => {
+      setMenuExpanded(false)
+      closeTimerRef.current = null
+    }, 500)
+
+    return () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current)
+        closeTimerRef.current = null
+      }
+    }
+  }, [open])
+
   const scrollTo = (id: string) => {
     setMobileOpen(false); setOpen(false)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -31,11 +59,16 @@ export default function Header() {
 
   return (
     <>
-      {open && <div className="fixed inset-0 z-[99]" onClick={() => setOpen(false)} />}
+      {open && (
+        <div
+          className="fixed inset-0 z-[99] bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.2)_100%)] backdrop-blur-[0.5px]"
+          onClick={() => setOpen(false)}
+        />
+      )}
 
       <nav className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-10" style={{ pointerEvents: 'none' }}>
         <div
-          className={`w-full bg-[#e8e8e8] overflow-hidden transition-all duration-300 ${open ? 'rounded-[24px] shadow-[0_8px_48px_rgba(0,0,0,0.12)]' : 'rounded-full shadow-[0_2px_20px_rgba(0,0,0,0.08)]'}`}
+          className={`w-full bg-[#e8e8e8] overflow-hidden ${menuExpanded ? 'rounded-[24px] shadow-[0_8px_48px_rgba(0,0,0,0.12)]' : 'rounded-full shadow-[0_2px_20px_rgba(0,0,0,0.08)]'}`}
           style={{ maxWidth: 'calc(1560px - 80px)', pointerEvents: 'auto' }}
         >
 
@@ -70,8 +103,11 @@ export default function Header() {
           </div>
 
           {/* Expanded panel */}
-          <div className="overflow-hidden transition-all duration-500" style={{ maxHeight: open ? '520px' : '0' }}>
-            <div className="px-5 pb-7 pt-1 flex flex-col gap-6">
+          <div
+            className="overflow-hidden origin-top transition-[max-height,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{ maxHeight: open ? '640px' : '0', opacity: open ? 1 : 0 }}
+          >
+            <div className={`px-5 pb-7 pt-1 flex flex-col gap-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? 'translate-y-0' : '-translate-y-4'}`}>
               <div className="grid gap-8" style={{ gridTemplateColumns: '1fr 1.3fr' }}>
                 {/* Links */}
                 <div className="flex flex-col">
@@ -88,7 +124,11 @@ export default function Header() {
                 </div>
                 {/* Preview image */}
                 <div className="rounded-xl overflow-hidden relative" style={{ height: 220 }}>
-                  <img src="/images/hero-bg.png" alt="Studio" className="w-full h-full object-cover grayscale" />
+                  <img
+                    src={resolveAsset(assets, 'hero_bg', '/images/placeholder-photo.svg')}
+                    alt="Studio"
+                    className="w-full h-full object-cover grayscale"
+                  />
                   <div className="absolute inset-0 flex flex-col justify-between p-[14px_18px]" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%)' }}>
                     <span className="text-[0.8125rem] font-semibold text-white tracking-[-0.01em]">tirrex® Studio</span>
                     <span className="text-[0.6875rem] text-white/70 self-center">© 2025 All rights reserved</span>

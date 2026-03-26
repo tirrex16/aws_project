@@ -4,15 +4,15 @@ export default function Footer() {
   const ref = useRef<HTMLElement>(null)
 
   return (
-    <footer id="contact" ref={ref} className="max-w-[1560px] mx-auto px-10 pt-24 pb-12 border-t border-[#e8e8e8]">
+    <footer id="contact" ref={ref} className="max-w-[1560px] mx-auto px-10 pt-16 pb-10 border-t border-[#e8e8e8]">
       {/* CTA */}
       <p className="text-xs font-semibold tracking-[0.07em] uppercase text-[#999999] mb-5">
         Start a project
       </p>
-      <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold tracking-[-0.045em] leading-[1.05] mb-12">
+      <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold tracking-[-0.045em] leading-[1.05] mb-9">
         Let's create<br />something great.
       </h2>
-      <form className="flex gap-2.5 mb-24" style={{ maxWidth: 380 }} onSubmit={(e) => e.preventDefault()}>
+      <form className="flex gap-2.5 mb-14" style={{ maxWidth: 380 }} onSubmit={(e) => e.preventDefault()}>
         <input
           type="email" placeholder="Enter your email" aria-label="Email"
           className="flex-1 px-[18px] py-2.5 border border-[#e8e8e8] rounded-full text-sm text-[#0f0f0f] bg-transparent outline-none placeholder:text-[#999999] focus:border-[#0f0f0f] transition-colors"

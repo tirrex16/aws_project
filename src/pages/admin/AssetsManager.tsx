@@ -9,19 +9,19 @@ interface AssetDefinition {
 }
 
 const SITE_ASSETS: AssetDefinition[] = [
-  { key: 'hero_bg', label: 'Hero Background', fallback: '/images/hero-bg.png', description: 'Used in the nav overlay menu' },
-  { key: 'hero_bw', label: 'Hero Main Image', fallback: '/images/hero-bw.png', description: 'Large hero photo on homepage' },
-  { key: 'showreel', label: 'Showreel Image', fallback: '/images/showreel.png', description: 'About section showreel' },
-  { key: 'bento_building', label: 'Bento Building', fallback: '/images/bento-building.png', description: 'Why Us bento card' },
-  { key: 'bento_silhouette', label: 'Bento Silhouette', fallback: '/images/bento-silhouette.png', description: 'Why Us bento card' },
-  { key: 'project_1', label: 'Project Image 1', fallback: '/images/project-1.png', description: 'Services/sections image' },
-  { key: 'project_2', label: 'Project Image 2', fallback: '/images/project-2.png', description: 'Services/sections image' },
-  { key: 'project_3', label: 'Project Image 3', fallback: '/images/project-3.png', description: 'Services/sections image' },
-  { key: 'project_4', label: 'Project Image 4', fallback: '/images/project-4.png', description: 'Services/sections image' },
-  { key: 'work_1', label: 'Work Card 1', fallback: '/images/work-1.png', description: 'Selected Work card' },
-  { key: 'work_2', label: 'Work Card 2', fallback: '/images/work-2.png', description: 'Selected Work card' },
-  { key: 'work_3', label: 'Work Card 3', fallback: '/images/work-3.png', description: 'Selected Work card' },
-  { key: 'work_4', label: 'Work Card 4', fallback: '/images/work-4.png', description: 'Selected Work card' },
+  { key: 'hero_bg', label: 'Hero Background', fallback: '/images/placeholder-photo.svg', description: 'Used in the nav overlay menu' },
+  { key: 'hero_bw', label: 'Hero Main Image', fallback: '/images/placeholder-photo.svg', description: 'Large hero photo on homepage' },
+  { key: 'showreel', label: 'Showreel Image', fallback: '/images/placeholder-photo.svg', description: 'About section showreel' },
+  { key: 'bento_building', label: 'Bento Building', fallback: '/images/placeholder-photo.svg', description: 'Why Us bento card' },
+  { key: 'bento_silhouette', label: 'Bento Silhouette', fallback: '/images/placeholder-photo.svg', description: 'Why Us bento card' },
+  { key: 'project_1', label: 'Project Image 1', fallback: '/images/placeholder-photo.svg', description: 'Services/sections image' },
+  { key: 'project_2', label: 'Project Image 2', fallback: '/images/placeholder-photo.svg', description: 'Services/sections image' },
+  { key: 'project_3', label: 'Project Image 3', fallback: '/images/placeholder-photo.svg', description: 'Services/sections image' },
+  { key: 'project_4', label: 'Project Image 4', fallback: '/images/placeholder-photo.svg', description: 'Services/sections image' },
+  { key: 'work_1', label: 'Work Card 1', fallback: '/images/placeholder-photo.svg', description: 'Selected Work card' },
+  { key: 'work_2', label: 'Work Card 2', fallback: '/images/placeholder-photo.svg', description: 'Selected Work card' },
+  { key: 'work_3', label: 'Work Card 3', fallback: '/images/placeholder-photo.svg', description: 'Selected Work card' },
+  { key: 'work_4', label: 'Work Card 4', fallback: '/images/placeholder-photo.svg', description: 'Selected Work card' },
 ]
 
 function fileToBase64(file: File): Promise<string> {

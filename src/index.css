@@ -2,6 +2,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
+/* =============================================
+   SF Pro Display (local in /public)
+   ============================================= */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/SF-Pro-Display-Regular.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display Bold';
+  src: url('/SF-Pro-Display-Bold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  font-family: 'SF Pro Display', Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+body {
+  font-family: 'SF Pro Display', Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 400;
+}
+
+/* Anything that is explicitly "bold/title" uses Bold font file */
+.font-bold,
+.font-extrabold,
+.font-black,
+strong,
+b {
+  font-family: 'SF Pro Display Bold', 'SF Pro Display', Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
 /* ============================================= 
    SCROLL REVEAL — keyframe-based, can't be Tailwind 
    ============================================= */

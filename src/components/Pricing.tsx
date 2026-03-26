@@ -32,9 +32,9 @@ export default function Pricing() {
   const plan = plans[tab]
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[120px]" id="pricing" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="pricing" ref={ref}>
       {/* Header */}
-      <div className="flex justify-between items-start mb-12 reveal">
+      <div className="flex justify-between items-start mb-8 reveal">
         <div>
           <h2 className="text-[clamp(2.25rem,6vw,5rem)] font-extrabold tracking-[-0.045em] leading-none">Pricing Plans.</h2>
           <p className="text-sm text-[#999999] leading-[1.6] mt-2.5" style={{ maxWidth: 280 }}>

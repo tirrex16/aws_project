@@ -18,15 +18,15 @@ export default function SelectedWork() {
   }, [])
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[120px]" id="work" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="work" ref={ref}>
       {/* Meta */}
-      <div className="flex items-center justify-between mb-12 reveal">
+      <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] text-[#999999]" />
         <span className="text-[0.8125rem] text-[#999999]">(02)</span>
       </div>
 
       {/* Header */}
-      <div className="flex justify-between items-end mb-8 gap-6 reveal">
+      <div className="flex justify-between items-end mb-6 gap-6 reveal">
         <div>
           <h2 className="text-[clamp(2.25rem,6vw,5rem)] font-extrabold tracking-[-0.045em] leading-none">
             Selected Work.

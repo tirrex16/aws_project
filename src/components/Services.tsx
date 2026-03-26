@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useAdmin, resolveAsset } from '../context/AdminContext.tsx'
 
 interface ServiceItem { name: string; num: string; desc: string; thumb: string; tags: string[] }
 
@@ -12,6 +13,7 @@ const items: ServiceItem[] = [
 export default function Services() {
   const ref = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState<number>(-1)
+  const { assets } = useAdmin()
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll<HTMLElement>('.reveal')
@@ -25,8 +27,8 @@ export default function Services() {
   }, [])
 
   return (
-    <div className="max-w-[1560px] mx-auto px-10 pb-[120px]" id="services" ref={ref}>
-      <div className="bg-[#0f0f0f] rounded-[28px] px-14 py-[52px] reveal">
+    <div className="max-w-[1560px] mx-auto px-10 pb-[84px]" id="services" ref={ref}>
+      <div className="bg-[#0f0f0f] rounded-[28px] px-14 py-[44px] reveal">
         {/* Meta */}
         <div className="flex items-center justify-between pb-3 mb-0 border-b border-white/[0.07]">
           <span className="text-[0.8125rem] font-medium text-white/[0.38] tracking-[-0.01em]">/Services</span>
@@ -53,7 +55,12 @@ export default function Services() {
                 </div>
                 <div className="overflow-hidden transition-all duration-500" style={{ maxHeight: isActive ? '400px' : '0', paddingBottom: isActive ? '32px' : '0' }}>
                   <div className="flex items-start gap-5 mb-5">
-                    <img src={s.thumb} alt={s.name} className="w-20 shrink-0 rounded-lg object-cover grayscale" style={{ height: 60 }} />
+                    <img
+                      src={resolveAsset(assets, `project_${i + 1}`, '/images/placeholder-photo.svg') || s.thumb}
+                      alt={s.name}
+                      className="w-20 shrink-0 rounded-lg object-cover grayscale"
+                      style={{ height: 60 }}
+                    />
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-white tracking-[-0.03em] mb-3">{s.name}</h3>
                       <p className="text-sm text-white/55 leading-[1.65]" style={{ maxWidth: 460, margin: 0 }}>{s.desc}</p>

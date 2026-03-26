@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Placeholder image">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2f2f2" />
+      <stop offset="100%" stop-color="#e2e2e2" />
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)" />
+  <g fill="#b0b0b0">
+    <circle cx="520" cy="420" r="90" />
+    <path d="M300 700l190-180 130 110 220-250 260 320H300z" />
+  </g>
+  <text x="800" y="820" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="44" fill="#8a8a8a">
+    Replace image from Admin -> Assets
+  </text>
+</svg>

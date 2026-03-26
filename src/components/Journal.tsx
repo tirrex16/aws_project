@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import { useAdmin, resolveAsset } from '../context/AdminContext.tsx'
 
 interface Post { title: string; tag: string; date: string; img: string }
 
@@ -10,6 +11,7 @@ const posts: Post[] = [
 
 export default function Journal() {
   const ref = useRef<HTMLElement>(null)
+  const { assets } = useAdmin()
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll<HTMLElement>('.reveal')
@@ -23,9 +25,9 @@ export default function Journal() {
   }, [])
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[120px]" id="blog" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="blog" ref={ref}>
       {/* Meta */}
-      <div className="flex items-center justify-between mb-12 reveal">
+      <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] font-medium text-[#999999] tracking-[-0.01em]">/Blog</span>
         <span className="text-[0.8125rem] text-[#999999]">(05)</span>
       </div>
@@ -34,7 +36,9 @@ export default function Journal() {
         {posts.map((p, i) => (
           <article key={i} className={`cursor-pointer group reveal reveal-d${i + 1}`}>
             <img
-              src={p.img} alt={p.title} loading="lazy"
+              src={resolveAsset(assets, `work_${i + 1}`, '/images/placeholder-photo.svg')}
+              alt={p.title}
+              loading="lazy"
               className="w-full aspect-[16/10] object-cover rounded-[14px] block mb-4 group-hover:opacity-85 transition-opacity"
             />
             <span className="block text-[0.6875rem] font-semibold tracking-[0.07em] uppercase text-[#999999] mb-1.5">{p.tag}</span>

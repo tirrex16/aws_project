@@ -1,18 +1,18 @@
 import { useRef, useEffect } from 'react'
 
-interface Logo { name: string; src: string }
+interface SkillItem { kind: 'website' | 'figma' | 'photoshop' | 'illustrator' }
+const highlights = [
+  '7+ Years of Experience',
+  '140+ Projects completed',
+  '97% Customer satisfaction rate',
+  'Fast Response Time',
+]
 
-const logos: Logo[] = [
-  { name: 'Notion',    src: '/images/notion.svg' },
-  { name: 'Linear',   src: '/images/linear.svg' },
-  { name: 'Vercel',   src: '/images/vercel.svg' },
-  { name: 'Raycast',  src: '/images/raycast.svg' },
-  { name: 'Loom',     src: '/images/loom.svg' },
-  { name: 'Stripe',   src: '/images/stripe.svg' },
-  { name: 'Supabase', src: '/images/supabase.svg' },
-  { name: 'Framer',   src: '/images/framer.svg' },
-  { name: 'Webflow',  src: '/images/webflow.svg' },
-  { name: 'Figma',    src: '/images/figma.svg' },
+const skills: SkillItem[] = [
+  { kind: 'website' },
+  { kind: 'figma' },
+  { kind: 'photoshop' },
+  { kind: 'illustrator' },
 ]
 
 export default function Hero() {
@@ -36,20 +36,46 @@ export default function Hero() {
         <h1 className="text-[clamp(72px,13vw,200px)] font-black tracking-[-0.045em] leading-[0.92] text-[#0f0f0f] reveal">
           tirrex
         </h1>
-        <p className="text-[0.9375rem] text-[#3b5bdb] leading-[1.65] max-w-[230px] mt-2 shrink-0 text-right reveal">
-          Everything is designed. So let me be your designer.
-        </p>
       </div>
 
-      {/* Logo ticker */}
+      {/* Skills ticker */}
       <div className="max-w-[1560px] mx-auto flex items-center border-t border-[#e8e8e8] border-b px-10 overflow-hidden reveal" style={{ height: 44 }}>
         <div className="flex-1 overflow-hidden">
           <div className="flex items-center w-max" style={{ animation: 'ticker-roll 22s linear infinite' }}>
-            {[...logos, ...logos].map((l, i) => (
-              <img
-                key={i} src={l.src} alt={l.name}
-                style={{ height: 24, width: 'auto', marginLeft: 24, marginRight: 24, filter: 'grayscale(100%) opacity(0.35)', display: 'block' }}
-              />
+            {[...skills, ...skills, ...skills].map((item, i) => (
+              <div key={`${item.kind}-${i}`} className="flex items-center mx-5 whitespace-nowrap">
+                {item.kind === 'website' && (
+                  <span className="w-5 h-5 rounded-full bg-[#e8f3ff] border border-[#bfdcff] text-[#2b6cb0] flex items-center justify-center">
+                    <span className="w-2.5 h-2.5 border border-current rounded-full relative">
+                      <span className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[1px] bg-current" />
+                    </span>
+                  </span>
+                )}
+                {item.kind === 'figma' && (
+                  <span className="w-5 h-5 rounded-md bg-white border border-[#ddd] relative overflow-hidden">
+                    <span className="absolute left-[3px] top-[2px] w-[6px] h-[6px] rounded-full bg-[#f24e1e]" />
+                    <span className="absolute left-[3px] top-[8px] w-[6px] h-[6px] rounded-full bg-[#a259ff]" />
+                    <span className="absolute left-[3px] top-[14px] w-[6px] h-[6px] rounded-full bg-[#1abcfe]" />
+                    <span className="absolute left-[9px] top-[2px] w-[6px] h-[6px] rounded-full bg-[#ff7262]" />
+                    <span className="absolute left-[9px] top-[8px] w-[6px] h-[6px] rounded-full bg-[#0acf83]" />
+                  </span>
+                )}
+                {item.kind === 'photoshop' && (
+                  <span className="w-5 h-5 rounded-[5px] bg-[#001e36] border border-[#31a8ff] text-[#31a8ff] text-[0.5rem] font-bold leading-none flex items-center justify-center">
+                    Ps
+                  </span>
+                )}
+                {item.kind === 'illustrator' && (
+                  <span className="w-5 h-5 rounded-[5px] bg-[#261300] border border-[#ff9a00] text-[#ff9a00] text-[0.5rem] font-bold leading-none flex items-center justify-center">
+                    Ai
+                  </span>
+                )}
+              </div>
+            ))}
+            {[...highlights, ...highlights].map((text, i) => (
+              <span key={`${text}-${i}`} className="text-[0.8125rem] text-[#777] mx-5 whitespace-nowrap">
+                {text}
+              </span>
             ))}
           </div>
         </div>
@@ -64,15 +90,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Hero image */}
-      <div className="max-w-[1560px] mx-auto px-10 pt-5 reveal">
-        <img
-          src="/images/hero-bw.png" alt="Kanso studio"
-          className="w-full object-cover rounded-[20px] grayscale block"
-          style={{ height: 'clamp(320px, 52vw, 680px)' }}
-        />
-        <p className="text-center mt-3 text-[0.6875rem] text-[#999999] tracking-[0.04em]">© 2025 Kanso</p>
-      </div>
+      
+
     </section>
   )
 }

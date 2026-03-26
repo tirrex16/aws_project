@@ -1,7 +1,9 @@
 import { useRef, useEffect } from 'react'
+import { useAdmin, resolveAsset } from '../context/AdminContext.tsx'
 
 export default function Capabilities() {
   const ref = useRef<HTMLElement>(null)
+  const { assets } = useAdmin()
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll<HTMLElement>('.reveal')
@@ -21,14 +23,14 @@ export default function Capabilities() {
   ]
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[120px]" id="why" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="why" ref={ref}>
       {/* Meta */}
-      <div className="flex items-center justify-between mb-12 reveal">
+      <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] font-medium text-[#999999] tracking-[-0.01em]">/Why us</span>
         <span className="text-[0.8125rem] text-[#999999]">(03)</span>
       </div>
 
-      <h2 className="text-[clamp(1.5rem,3.2vw,2.5rem)] font-bold tracking-[-0.03em] leading-[1.25] mb-10 max-w-[760px] reveal">
+      <h2 className="text-[clamp(1.5rem,3.2vw,2.5rem)] font-bold tracking-[-0.03em] leading-[1.25] mb-7 max-w-[760px] reveal">
         We cut through noise to create designs that are{' '}
         <span className="text-[#999999]">thoughtful, timeless, and impactful.</span>
       </h2>
@@ -38,7 +40,11 @@ export default function Capabilities() {
 
         {/* Col 1 — dark card (spans 2 rows) */}
         <div className="row-span-2 bg-[#1a1a1a] rounded-[20px] overflow-hidden relative min-h-[360px] flex flex-col justify-end p-7">
-          <img src="/images/bento-building.png" alt="Studio" className="absolute inset-0 w-full h-full object-cover opacity-35 grayscale" />
+          <img
+            src={resolveAsset(assets, 'bento_building', '/images/placeholder-photo.svg')}
+            alt="Studio"
+            className="absolute inset-0 w-full h-full object-cover opacity-35 grayscale"
+          />
           <div className="relative z-10">
             <div className="text-lg font-bold text-white leading-[1.35] mb-5">Purposeful Design<br />for Modern Brands.</div>
             <ul className="flex flex-col gap-1.5 mb-6" style={{ padding: 0, listStyle: 'none', margin: '0 0 24px 0' }}>
@@ -100,7 +106,11 @@ export default function Capabilities() {
 
         {/* Col 4 — image (spans 3 rows) */}
         <div className="rounded-[20px] overflow-hidden relative min-h-[360px]" style={{ gridColumn: 4, gridRow: '1 / 4' }}>
-          <img src="/images/bento-silhouette.png" alt="Design with intent" className="w-full h-full object-cover grayscale" />
+          <img
+            src={resolveAsset(assets, 'bento_silhouette', '/images/placeholder-photo.svg')}
+            alt="Design with intent"
+            className="w-full h-full object-cover grayscale"
+          />
           <div className="absolute inset-0 flex flex-col justify-end p-6" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 45%)' }}>
             <span className="text-[0.6875rem] text-white/45 tracking-[0.08em] mb-[5px]">tirrex</span>
             <div className="text-lg font-bold text-white tracking-[-0.02em] mb-1">Design with intent.</div>
