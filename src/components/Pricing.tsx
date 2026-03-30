@@ -1,22 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
+import { useAdmin } from '../context/AdminContext.tsx'
 
 type PlanKey = 'monthly' | 'project'
-interface Plan { type: string; price: string; period: string; desc: string; addon: string; delivery: string }
-
-const plans: Record<PlanKey, Plan> = {
-  monthly: { type: 'Subscription', price: '$2500', period: '/month', desc: 'For ongoing support and flexible design needs. Ideal for startups, growing brands, and marketing teams needing consistent creative support.', addon: '($800/m) SEO optimization Add-on.', delivery: '48 hours' },
-  project: { type: 'Project Based', price: '$5000', period: '/project', desc: 'For focused, one-time design projects. Perfect for brands that need a complete design solution delivered as a cohesive package.', addon: '($1200) SEO optimization Add-on.', delivery: '2-4 weeks' },
-}
-
-const features = [
-  'Unlimited design requests', 'One active task at a time', 'Weekly progress calls',
-  'Fast turnaround times', 'Brand consistency across all deliverables', 'Priority support', 'Pause or cancel anytime',
-]
 
 export default function Pricing() {
   const ref = useRef<HTMLElement>(null)
   const [tab, setTab]         = useState<PlanKey>('monthly')
   const [addonOn, setAddonOn] = useState(false)
+  const { siteContent } = useAdmin()
+  const content = siteContent.pricing
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll<HTMLElement>('.reveal')
@@ -29,10 +21,10 @@ export default function Pricing() {
     return () => io.disconnect()
   }, [])
 
-  const plan = plans[tab]
+  const plan = content[tab]
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="pricing" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="pricing" ref={ref}>
       {/* Header */}
       <div className="flex justify-between items-start mb-8 reveal">
         <div>
@@ -59,13 +51,13 @@ export default function Pricing() {
       </div>
 
       {/* Card grid */}
-      <div className="grid grid-cols-2 border border-[#e8e8e8] rounded-[20px] overflow-hidden reveal">
+      <div className="grid grid-cols-1 md:grid-cols-2 border border-[#e8e8e8] rounded-[20px] overflow-hidden reveal">
         {/* Left — price card */}
-        <div className="p-9 flex flex-col justify-between border-r border-[#e8e8e8]">
+        <div className="p-6 md:p-9 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#e8e8e8]">
           <div>
             <div className="flex justify-between items-start mb-3">
               <span className="text-[0.9375rem] font-semibold tracking-[-0.01em]">{plan.type}</span>
-              <span className="text-[0.8125rem] text-[#999999]">Kanso®</span>
+              <span className="text-[0.8125rem] text-[#999999]">Tirrex®</span>
             </div>
             <div className="text-[2.5rem] font-extrabold tracking-[-0.04em] leading-none mb-1">
               {plan.price} <span className="text-base font-normal text-[#999999]">{plan.period}</span>
@@ -82,11 +74,11 @@ export default function Pricing() {
         </div>
 
         {/* Right — features */}
-        <div className="p-9 flex flex-col justify-between">
+        <div className="p-6 md:p-9 flex flex-col justify-between">
           <div>
             <div className="text-[0.8125rem] text-[#999999] mb-5">What's included:</div>
             <div className="flex flex-col gap-3.5">
-              {features.map((f, i) => (
+              {content.features.map((f, i) => (
                 <span key={i} className="text-sm font-medium flex items-center gap-2.5 tracking-[-0.01em]">
                   <span className="w-[6px] h-[6px] rounded-full bg-[#0f0f0f] shrink-0 inline-block" />
                   {f}
@@ -94,7 +86,7 @@ export default function Pricing() {
               ))}
             </div>
           </div>
-          <div className="flex items-center justify-between mt-8 pt-5 border-t border-[#e8e8e8]">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-8 pt-5 border-t border-[#e8e8e8]">
             <div>
               <div className="text-xs text-[#999999]">Estimated delivery:</div>
               <div className="text-[0.9375rem] font-semibold tracking-[-0.01em]">{plan.delivery}</div>

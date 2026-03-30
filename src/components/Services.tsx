@@ -1,19 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { useAdmin, resolveAsset } from '../context/AdminContext.tsx'
 
-interface ServiceItem { name: string; num: string; desc: string; thumb: string; tags: string[] }
-
-const items: ServiceItem[] = [
-  { name: 'Brand Identity', num: '1', desc: 'We craft cohesive brand systems that communicate who you are with clarity and intention, from the core idea to every visual expression.', thumb: '/images/project-1.png', tags: ['Logo Design', 'Visual Identity Systems', 'Brand Guidelines', 'Typography & Color Systems', 'Naming & Tone of Voice', 'Brand Strategy'] },
-  { name: 'Digital Design', num: '2', desc: 'Creating stunning digital experiences that blend aesthetics with functionality, from responsive websites to interactive applications.', thumb: '/images/project-2.png', tags: ['Web Design', 'UI/UX Design', 'Responsive Design', 'Prototyping', 'Design Systems', 'Interaction Design'] },
-  { name: 'Art Direction', num: '3', desc: 'Guiding the visual narrative of your brand through thoughtful creative direction that ensures consistency across all touchpoints.', thumb: '/images/project-3.png', tags: ['Creative Direction', 'Visual Strategy', 'Photography Direction', 'Campaign Design', 'Editorial Design'] },
-  { name: 'Strategy & Consulting', num: '4', desc: 'Strategic consulting to help you define your brand positioning, understand your audience, and craft meaningful brand experiences.', thumb: '/images/project-4.png', tags: ['Brand Positioning', 'Market Research', 'Audience Analysis', 'Content Strategy', 'Growth Strategy'] },
-]
-
 export default function Services() {
   const ref = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState<number>(-1)
-  const { assets } = useAdmin()
+  const { assets, siteContent } = useAdmin()
+  const items = siteContent.services.items
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll<HTMLElement>('.reveal')
@@ -27,11 +19,11 @@ export default function Services() {
   }, [])
 
   return (
-    <div className="max-w-[1560px] mx-auto px-10 pb-[84px]" id="services" ref={ref}>
-      <div className="bg-[#0f0f0f] rounded-[28px] px-14 py-[44px] reveal">
+    <div className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="services" ref={ref}>
+      <div className="bg-[#0f0f0f] rounded-[20px] md:rounded-[28px] px-5 py-7 md:px-14 md:py-[44px] reveal">
         {/* Meta */}
         <div className="flex items-center justify-between pb-3 mb-0 border-b border-white/[0.07]">
-          <span className="text-[0.8125rem] font-medium text-white/[0.38] tracking-[-0.01em]">/Services</span>
+          <span className="text-[0.8125rem] font-medium text-white/[0.38] tracking-[-0.01em]">Services</span>
           <span className="text-[0.8125rem] text-white/25">(04)</span>
         </div>
 
@@ -56,7 +48,7 @@ export default function Services() {
                 <div className="overflow-hidden transition-all duration-500" style={{ maxHeight: isActive ? '400px' : '0', paddingBottom: isActive ? '32px' : '0' }}>
                   <div className="flex items-start gap-5 mb-5">
                     <img
-                      src={resolveAsset(assets, `project_${i + 1}`, '/images/placeholder-photo.svg') || s.thumb}
+                      src={resolveAsset(assets, `project_${i + 1}`, '/images/placeholder-photo.svg')}
                       alt={s.name}
                       className="w-20 shrink-0 rounded-lg object-cover grayscale"
                       style={{ height: 60 }}

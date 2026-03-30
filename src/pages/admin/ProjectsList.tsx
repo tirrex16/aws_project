@@ -3,13 +3,44 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAdmin } from '../../context/AdminContext.tsx'
 
 export default function ProjectsList() {
-  const { projects, deleteProject } = useAdmin()
+  const { projects, deleteProject, loading } = useAdmin()
   const navigate = useNavigate()
   const [confirmId, setConfirmId] = useState<string | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
-  const handleDelete = (id: string) => {
-    deleteProject(id)
+  const handleDelete = async (id: string) => {
+    setDeleting(true)
+    await deleteProject(id)
+    setDeleting(false)
     setConfirmId(null)
+  }
+
+  if (loading) {
+    return (
+      <div className="animate-in fade-in duration-300">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <div className="h-8 w-40 bg-[#e8e8e8] rounded-lg animate-pulse mb-2" />
+            <div className="h-4 w-24 bg-[#f0f0f0] rounded animate-pulse" />
+          </div>
+          <div className="h-10 w-40 bg-[#e8e8e8] rounded-xl animate-pulse" />
+        </div>
+        <div className="bg-white border border-[#e8e8e8] rounded-[24px] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-6 px-6 py-5 border-b border-[#e8e8e8] last:border-0">
+              <div className="w-20 h-14 bg-[#f0f0f0] rounded-lg animate-pulse" />
+              <div className="flex-1">
+                <div className="h-5 w-32 bg-[#e8e8e8] rounded animate-pulse mb-2" />
+                <div className="h-3 w-48 bg-[#f0f0f0] rounded animate-pulse" />
+              </div>
+              <div className="h-4 w-20 bg-[#f0f0f0] rounded animate-pulse" />
+              <div className="h-4 w-20 bg-[#f0f0f0] rounded animate-pulse" />
+              <div className="h-4 w-12 bg-[#f0f0f0] rounded animate-pulse" />
+            </div>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -49,7 +80,11 @@ export default function ProjectsList() {
                 <tr key={p.id} className="border-b border-[#e8e8e8] last:border-0 hover:bg-[#fafafa] transition-colors group">
                   <td className="py-4 px-6">
                     <div className="w-20 h-14 rounded-lg overflow-hidden bg-[#f0f0f0] border border-[#e8e8e8]">
-                      <img src={p.img} alt={p.name} className="w-full h-full object-cover grayscale" />
+                      {p.img ? (
+                        <img src={p.img} alt={p.name} className="w-full h-full object-cover grayscale" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[#ccc] text-xs">No img</div>
+                      )}
                     </div>
                   </td>
                   <td className="py-4 px-6">
@@ -84,21 +119,26 @@ export default function ProjectsList() {
 
       {/* Confirm delete modal */}
       {confirmId && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5 animate-in fade-in" onClick={() => setConfirmId(null)}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-5 animate-in fade-in" onClick={() => !deleting && setConfirmId(null)}>
           <div className="w-full max-w-[420px] bg-white rounded-[24px] p-8 shadow-[0_8px_32px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-[1.5rem] font-bold tracking-[-0.02em] text-[#0f0f0f] mb-3">Delete project?</h2>
             <p className="text-[0.9375rem] text-[#666] leading-[1.5] mb-8">
               This action cannot be undone. The project will be removed from the public site immediately.
             </p>
             <div className="flex items-center justify-end gap-3">
-              <button className="px-5 py-2.5 bg-white border border-[#e8e8e8] text-[#0f0f0f] rounded-xl text-sm font-semibold hover:bg-[#f5f5f5] transition-colors cursor-pointer" onClick={() => setConfirmId(null)}>
+              <button
+                className="px-5 py-2.5 bg-white border border-[#e8e8e8] text-[#0f0f0f] rounded-xl text-sm font-semibold hover:bg-[#f5f5f5] transition-colors cursor-pointer disabled:opacity-50"
+                onClick={() => setConfirmId(null)}
+                disabled={deleting}
+              >
                 Cancel
               </button>
               <button
-                className="px-5 py-2.5 bg-red-600 text-white border border-red-600 rounded-xl text-sm font-semibold hover:bg-red-700 transition-colors cursor-pointer"
+                className="px-5 py-2.5 bg-red-600 text-white border border-red-600 rounded-xl text-sm font-semibold hover:bg-red-700 transition-colors cursor-pointer disabled:opacity-50"
                 onClick={() => handleDelete(confirmId)}
+                disabled={deleting}
               >
-                Delete
+                {deleting ? 'Deleting…' : 'Delete'}
               </button>
             </div>
           </div>

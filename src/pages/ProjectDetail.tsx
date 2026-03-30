@@ -149,7 +149,7 @@ export default function ProjectDetail() {
           ))}
         </div>
 
-        <p className="text-[0.8125rem] text-[#999999] text-center mb-8">© Kanso Studio</p>
+        <p className="text-[0.8125rem] text-[#999999] text-center mb-8">© Tirrex Studio</p>
       </section>
     </div>
   )

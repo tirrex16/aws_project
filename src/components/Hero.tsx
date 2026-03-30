@@ -32,14 +32,14 @@ export default function Hero() {
   return (
     <section style={{ paddingTop: 'calc(52px + 80px)' }} ref={ref}>
       {/* Wordmark row */}
-      <div className="flex items-start justify-between max-w-[1560px] mx-auto px-10 pt-8 pb-5 gap-6">
+      <div className="flex items-start justify-between max-w-[1560px] mx-auto px-5 md:px-10 pt-8 pb-5 gap-6">
         <h1 className="text-[clamp(72px,13vw,200px)] font-black tracking-[-0.045em] leading-[0.92] text-[#0f0f0f] reveal">
-          tirrex
+          portfolio
         </h1>
       </div>
 
       {/* Skills ticker */}
-      <div className="max-w-[1560px] mx-auto flex items-center border-t border-[#e8e8e8] border-b px-10 overflow-hidden reveal" style={{ height: 44 }}>
+      <div className="max-w-[1560px] mx-auto flex items-center px-5 md:px-10 overflow-hidden reveal" style={{ height: 44 }}>
         <div className="flex-1 overflow-hidden">
           <div className="flex items-center w-max" style={{ animation: 'ticker-roll 22s linear infinite' }}>
             {[...skills, ...skills, ...skills].map((item, i) => (
@@ -79,13 +79,13 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        <div className="shrink-0 pl-8 flex flex-col items-end gap-[3px]">
+        <div className="hidden sm:flex shrink-0 pl-8 flex-col items-end gap-[3px]">
           <div className="flex items-center gap-2">
             <span className="text-xs text-[#666]">★★★★★</span>
             <span className="text-xs font-semibold text-[#666]">4.9/5</span>
           </div>
           <span className="text-[0.6875rem] text-[#999999] whitespace-nowrap">
-            Trusted by <span className="text-[#3b5bdb] font-semibold">100+</span> businesses
+            Trusted by <span className="text-[#3b5bdb] font-semibold">30+</span> businesses
           </span>
         </div>
       </div>

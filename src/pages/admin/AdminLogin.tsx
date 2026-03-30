@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 
-const PIN = '1234'
-const SESSION_KEY = 'kanso_admin_auth'
+const PIN = 'uhuy123'
+const SESSION_KEY = 'tirrex_admin_auth'
 
 export function isAuthenticated(): boolean {
   return sessionStorage.getItem(SESSION_KEY) === 'true'
@@ -36,7 +36,7 @@ export default function AdminLogin({ onSuccess }: AdminLoginProps) {
         style={{ transform: shake ? 'translateX(10px)' : 'none' }}
       >
         <div className="w-[52px] h-[52px] bg-[#0f0f0f] rounded-2xl flex items-center justify-center text-white text-2xl font-black mb-8">
-          <span>K</span>
+          <span>t</span>
         </div>
         <h1 className="text-[1.5rem] font-bold tracking-[-0.02em] text-[#0f0f0f] mb-2">Admin Access</h1>
         <p className="text-[0.9375rem] text-[#666] mb-8">Enter your PIN to continue</p>
@@ -55,7 +55,6 @@ export default function AdminLogin({ onSuccess }: AdminLoginProps) {
             Sign in →
           </button>
         </form>
-        <p className="text-[0.8125rem] text-[#999999] mt-8">Default PIN: 1234</p>
       </div>
     </div>
   )

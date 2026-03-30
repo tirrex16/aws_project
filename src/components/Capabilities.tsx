@@ -3,7 +3,8 @@ import { useAdmin, resolveAsset } from '../context/AdminContext.tsx'
 
 export default function Capabilities() {
   const ref = useRef<HTMLElement>(null)
-  const { assets } = useAdmin()
+  const { assets, siteContent } = useAdmin()
+  const content = siteContent.capabilities
 
   useEffect(() => {
     const els = ref.current?.querySelectorAll<HTMLElement>('.reveal')
@@ -23,32 +24,32 @@ export default function Capabilities() {
   ]
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="why" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="why" ref={ref}>
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
-        <span className="text-[0.8125rem] font-medium text-[#999999] tracking-[-0.01em]">/Why us</span>
+        <span className="text-[0.8125rem] font-medium text-[#999999] tracking-[-0.01em]">Why us</span>
         <span className="text-[0.8125rem] text-[#999999]">(03)</span>
       </div>
 
       <h2 className="text-[clamp(1.5rem,3.2vw,2.5rem)] font-bold tracking-[-0.03em] leading-[1.25] mb-7 max-w-[760px] reveal">
-        We cut through noise to create designs that are{' '}
-        <span className="text-[#999999]">thoughtful, timeless, and impactful.</span>
+        {content.headline}{' '}
+        <span className="text-[#999999]">{content.headlineHighlight}</span>
       </h2>
 
       {/* Bento grid */}
-      <div className="grid grid-cols-4 gap-3 reveal">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 reveal">
 
         {/* Col 1 — dark card (spans 2 rows) */}
-        <div className="row-span-2 bg-[#1a1a1a] rounded-[20px] overflow-hidden relative min-h-[360px] flex flex-col justify-end p-7">
+        <div className="lg:row-span-2 bg-[#1a1a1a] rounded-[20px] overflow-hidden relative min-h-[280px] lg:min-h-[360px] flex flex-col justify-end p-5 md:p-7">
           <img
             src={resolveAsset(assets, 'bento_building', '/images/placeholder-photo.svg')}
             alt="Studio"
             className="absolute inset-0 w-full h-full object-cover opacity-35 grayscale"
           />
           <div className="relative z-10">
-            <div className="text-lg font-bold text-white leading-[1.35] mb-5">Purposeful Design<br />for Modern Brands.</div>
+            <div className="text-lg font-bold text-white leading-[1.35] mb-5" dangerouslySetInnerHTML={{ __html: content.darkCard.title.replace(/\n/g, '<br/>') }} />
             <ul className="flex flex-col gap-1.5 mb-6" style={{ padding: 0, listStyle: 'none', margin: '0 0 24px 0' }}>
-              {['Collaborative Approach', 'Quick turnaround', 'Clear Communication', 'Consistent Quality', 'Reliable Support'].map((t, i) => (
+              {content.darkCard.bullets.map((t, i) => (
                 <li key={i} className="text-xs text-white/65 flex items-center gap-1.5">
                   <span className="w-[5px] h-[5px] rounded-full bg-white/35 shrink-0 inline-block" />{t}
                 </li>
@@ -69,10 +70,10 @@ export default function Capabilities() {
                 <div className="w-full h-full flex items-center justify-center text-[0.6875rem] font-bold text-white" style={{ background: avGradients[k] }}>{l}</div>
               </div>
             ))}
-            <span className="text-sm font-bold ml-2.5">4.9/5 <span className="text-[#f59e0b] text-xs">★</span></span>
+            <span className="text-sm font-bold ml-2.5">{content.rating.score} <span className="text-[#f59e0b] text-xs">★</span></span>
           </div>
           <div className="text-[0.8125rem] text-[#999999]">
-            <span className="text-[#2f9e44] font-semibold">100+</span> Happy clients worldwide
+            <span className="text-[#2f9e44] font-semibold">{content.rating.clientCount}</span> Happy clients worldwide
           </div>
         </div>
 
@@ -80,32 +81,28 @@ export default function Capabilities() {
         <div className="border border-[#e8e8e8] rounded-[20px] p-6">
           <div className="text-[#f59e0b] text-[0.8125rem] mb-3">★★★★★</div>
           <p className="text-[0.8125rem] leading-[1.65] text-[#0f0f0f] mb-4" style={{ margin: '0 0 16px 0' }}>
-            "Kanso understood our brand better than we did. Their ability to find the essential and express it simply is what sets them apart."
+            {content.testimonial.quote}
           </p>
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full shrink-0" style={{ background: 'linear-gradient(135deg,#a78bfa,#7c3aed)' }} />
             <div>
-              <div className="text-[0.8125rem] font-semibold tracking-[-0.01em]">Sofia Ford</div>
-              <div className="text-xs text-[#999999]">Founder</div>
+              <div className="text-[0.8125rem] font-semibold tracking-[-0.01em]">{content.testimonial.name}</div>
+              <div className="text-xs text-[#999999]">{content.testimonial.role}</div>
             </div>
           </div>
         </div>
 
-        {/* Col 3 — 3 feature cards */}
-        {[
-          { ico: '⚡', title: 'Streamlined Process', desc: 'Our focused, step-by-step approach saves time and keeps projects moving smoothly.' },
-          { ico: '↗', title: 'Scalable Design', desc: 'We create systems that grow with your brand and stay effective over time.' },
-          { ico: '◎', title: '24/7 Dedicated Support', desc: "We're always here when you need us, ready to answer questions and provide updates." },
-        ].map((f, i) => (
+        {/* Col 3 — feature cards */}
+        {content.features.map((f, i) => (
           <div key={i} className="border border-[#e8e8e8] rounded-[20px] p-6">
-            <div className="w-8 h-8 bg-[#f5f5f5] rounded-lg flex items-center justify-center text-[0.9375rem] mb-3.5">{f.ico}</div>
+            <div className="w-8 h-8 bg-[#f5f5f5] rounded-lg flex items-center justify-center text-[0.9375rem] mb-3.5">{f.icon}</div>
             <div className="text-[0.9375rem] font-semibold tracking-[-0.015em] mb-2">{f.title}</div>
             <p className="text-[0.8125rem] text-[#999999] leading-[1.6]" style={{ margin: 0 }}>{f.desc}</p>
           </div>
         ))}
 
         {/* Col 4 — image (spans 3 rows) */}
-        <div className="rounded-[20px] overflow-hidden relative min-h-[360px]" style={{ gridColumn: 4, gridRow: '1 / 4' }}>
+        <div className="md:col-span-2 lg:col-span-1 lg:col-start-4 lg:row-start-1 lg:row-end-4 rounded-[20px] overflow-hidden relative min-h-[200px] md:min-h-[280px] lg:min-h-[360px]">
           <img
             src={resolveAsset(assets, 'bento_silhouette', '/images/placeholder-photo.svg')}
             alt="Design with intent"

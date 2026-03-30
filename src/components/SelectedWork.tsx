@@ -18,7 +18,7 @@ export default function SelectedWork() {
   }, [])
 
   return (
-    <section className="max-w-[1560px] mx-auto px-10 py-[84px]" id="work" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="work" ref={ref}>
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] text-[#999999]" />
@@ -26,7 +26,7 @@ export default function SelectedWork() {
       </div>
 
       {/* Header */}
-      <div className="flex justify-between items-end mb-6 gap-6 reveal">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 gap-4 sm:gap-6 reveal">
         <div>
           <h2 className="text-[clamp(2.25rem,6vw,5rem)] font-extrabold tracking-[-0.045em] leading-none">
             Selected Work.
@@ -41,7 +41,7 @@ export default function SelectedWork() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {projects.map((p, i) => (
           <Link
             key={i}

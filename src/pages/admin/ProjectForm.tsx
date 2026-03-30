@@ -2,18 +2,28 @@ import { useState, useEffect, useRef, type ChangeEvent, type FormEvent } from 'r
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAdmin } from '../../context/AdminContext.tsx'
 import { type Project, type ProjectSection } from '../../data/projects.ts'
+import { supabase } from '../../lib/supabaseClient.ts'
+import ImageCropModal from './ImageCropModal.tsx'
 
 function generateId(name: string): string {
   return name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + '-' + Date.now()
 }
 
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
+async function uploadImage(file: File, folder: string): Promise<string> {
+  const ext = file.name.split('.').pop() ?? 'png'
+  const filePath = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+
+  const { error } = await supabase.storage
+    .from('images')
+    .upload(filePath, file, { upsert: true })
+
+  if (error) {
+    console.error('Upload failed:', error.message)
+    throw new Error('Image upload failed: ' + error.message)
+  }
+
+  const { data } = supabase.storage.from('images').getPublicUrl(filePath)
+  return data.publicUrl
 }
 
 const emptySection = (): ProjectSection => ({
@@ -49,8 +59,11 @@ export default function ProjectForm() {
   )
   const [heroPreview, setHeroPreview] = useState<string>(existing?.heroImg ?? '')
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const heroInputRef = useRef<HTMLInputElement>(null)
+  const [heroCropFile, setHeroCropFile] = useState<File | null>(null)
+  const [sectionCropFile, setSectionCropFile] = useState<{ file: File; idx: number } | null>(null)
 
   useEffect(() => {
     if (existing) {
@@ -63,13 +76,31 @@ export default function ProjectForm() {
     setForm((prev) => ({ ...prev, [field]: value }))
 
   // ── Hero image upload ──
-  const handleHeroUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleHeroFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    const base64 = await fileToBase64(file)
-    setHeroPreview(base64)
-    set('img', base64)
-    set('heroImg', base64)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size cannot exceed 5MB')
+      e.target.value = ''
+      return
+    }
+    setHeroCropFile(file)
+    e.target.value = ''
+  }
+
+  const handleHeroCropConfirm = async (croppedFile: File) => {
+    setHeroCropFile(null)
+    setUploading(true)
+    try {
+      const url = await uploadImage(croppedFile, 'projects/hero')
+      setHeroPreview(url)
+      set('img', url)
+      set('heroImg', url)
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Upload failed')
+    } finally {
+      setUploading(false)
+    }
   }
 
   // ── Section helpers ──
@@ -91,10 +122,31 @@ export default function ProjectForm() {
     set('sections', form.sections.filter((_, i) => i !== idx))
   }
 
-  const handleSectionImages = async (idx: number, e: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? [])
-    const base64s = await Promise.all(files.map(fileToBase64))
-    updateSection(idx, 'images', [...form.sections[idx].images, ...base64s].slice(0, 2))
+  const handleSectionFileSelect = (idx: number, e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size cannot exceed 5MB')
+      e.target.value = ''
+      return
+    }
+    setSectionCropFile({ file, idx })
+    e.target.value = ''
+  }
+
+  const handleSectionCropConfirm = async (croppedFile: File) => {
+    if (!sectionCropFile) return
+    const idx = sectionCropFile.idx
+    setSectionCropFile(null)
+    setUploading(true)
+    try {
+      const url = await uploadImage(croppedFile, 'projects/sections')
+      updateSection(idx, 'images', [...form.sections[idx].images, url].slice(0, 2))
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Upload failed')
+    } finally {
+      setUploading(false)
+    }
   }
 
   const removeSectionImage = (sIdx: number, iIdx: number) => {
@@ -117,17 +169,22 @@ export default function ProjectForm() {
     e.preventDefault()
     if (!validate()) return
     setSaving(true)
-    const project: Project = {
-      ...form,
-      id: isEdit ? form.id : generateId(form.name),
+    try {
+      const project: Project = {
+        ...form,
+        id: isEdit ? form.id : generateId(form.name),
+      }
+      if (isEdit) {
+        await updateProject(project.id, project)
+      } else {
+        await addProject(project)
+      }
+      navigate('/admin/projects')
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Save failed')
+    } finally {
+      setSaving(false)
     }
-    if (isEdit) {
-      updateProject(project.id, project)
-    } else {
-      addProject(project)
-    }
-    setSaving(false)
-    navigate('/admin/projects')
   }
 
   return (
@@ -151,14 +208,22 @@ export default function ProjectForm() {
             className={`w-full h-[320px] rounded-[24px] overflow-hidden border-2 border-dashed ${heroPreview ? 'border-transparent' : 'border-[#d9d9d9] hover:border-[#0f0f0f] hover:bg-[#fafafa] bg-[#f5f5f5] cursor-pointer'} transition-all flex flex-col items-center justify-center relative group`}
             onClick={() => heroInputRef.current?.click()}
           >
+            {uploading && !heroPreview && (
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-8 h-8 border-2 border-[#0f0f0f] border-t-transparent rounded-full animate-spin" />
+                <p className="text-[0.9375rem] font-medium text-[#666]">Uploading...</p>
+              </div>
+            )}
             {heroPreview ? (
               <>
                 <img src={heroPreview} alt="Hero" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm cursor-pointer">
-                  <span className="text-white font-semibold text-sm bg-white/20 px-4 py-2 rounded-full backdrop-blur-md border border-white/30">Change Image</span>
+                  <span className="text-white font-semibold text-sm bg-white/20 px-4 py-2 rounded-full backdrop-blur-md border border-white/30">
+                    {uploading ? 'Uploading...' : 'Change Image'}
+                  </span>
                 </div>
               </>
-            ) : (
+            ) : !uploading && (
               <div className="flex flex-col items-center gap-2 text-center px-10">
                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-[#e8e8e8] mb-1">
                   <span className="text-xl">↑</span>
@@ -172,7 +237,7 @@ export default function ProjectForm() {
               type="file"
               accept="image/*"
               className="hidden"
-              onChange={handleHeroUpload}
+              onChange={handleHeroFileSelect}
             />
           </div>
           {heroPreview && (
@@ -329,14 +394,19 @@ export default function ProjectForm() {
                       ))}
                       {sec.images.length < 2 && (
                         <label className="w-[160px] h-[120px] rounded-xl border border-dashed border-[#ccc] hover:border-[#0f0f0f] hover:bg-[#fafafa] bg-[#f5f5f5] flex flex-col items-center justify-center cursor-pointer transition-colors text-[#888] hover:text-[#0f0f0f]">
-                          <span className="text-xl mb-1">+</span>
-                          <span className="text-[0.75rem] font-medium text-inherit">Add Image</span>
+                          {uploading ? (
+                            <div className="w-6 h-6 border-2 border-[#888] border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <>
+                              <span className="text-xl mb-1">+</span>
+                              <span className="text-[0.75rem] font-medium text-inherit">Add Image</span>
+                            </>
+                          )}
                           <input
                             type="file"
                             accept="image/*"
-                            multiple
                             className="hidden"
-                            onChange={(e) => handleSectionImages(idx, e)}
+                            onChange={(e) => handleSectionFileSelect(idx, e)}
                           />
                         </label>
                       )}
@@ -360,12 +430,29 @@ export default function ProjectForm() {
           <button
             type="submit"
             className="px-8 py-3 bg-[#0f0f0f] text-white rounded-xl font-semibold hover:bg-[#333] transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-            disabled={saving}
+            disabled={saving || uploading}
           >
-            {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create project'}
+            {saving ? 'Saving…' : uploading ? 'Uploading…' : isEdit ? 'Save changes' : 'Create project'}
           </button>
         </div>
       </form>
+
+      {heroCropFile && (
+        <ImageCropModal
+          file={heroCropFile}
+          onConfirm={handleHeroCropConfirm}
+          onCancel={() => setHeroCropFile(null)}
+          aspectRatio={4 / 3}
+        />
+      )}
+
+      {sectionCropFile && (
+        <ImageCropModal
+          file={sectionCropFile.file}
+          onConfirm={handleSectionCropConfirm}
+          onCancel={() => setSectionCropFile(null)}
+        />
+      )}
     </div>
   )
 }

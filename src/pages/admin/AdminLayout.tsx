@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-const SESSION_KEY = 'kanso_admin_auth'
+const SESSION_KEY = 'tirrex_admin_auth'
 
 interface AdminLayoutProps {
   children: ReactNode
@@ -10,7 +10,10 @@ interface AdminLayoutProps {
 
 const navItems = [
   { label: 'Projects', icon: '◼', path: '/admin/projects' },
-  { label: 'Assets', icon: '◈', path: '/admin/assets' },
+  { label: 'Capabilities', icon: '◆', path: '/admin/capabilities' },
+  { label: 'Services', icon: '◇', path: '/admin/services' },
+  { label: 'Pricing', icon: '◈', path: '/admin/pricing' },
+  { label: 'Journal', icon: '◉', path: '/admin/journal' },
 ]
 
 export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
@@ -27,9 +30,9 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
       <aside className="w-[280px] shrink-0 border-r border-[#e8e8e8] flex flex-col justify-between py-10 px-8 sticky top-0 h-screen overflow-y-auto">
         <div>
           <div className="flex items-center gap-3.5 mb-12">
-            <span className="w-10 h-10 bg-[#0f0f0f] rounded-xl flex items-center justify-center text-white font-black text-xl">K</span>
+            <span className="w-10 h-10 bg-[#0f0f0f] rounded-xl flex items-center justify-center text-white font-black text-xl">t</span>
             <div>
-              <div className="text-[0.9375rem] font-bold tracking-[-0.01em] leading-tight">Kanso</div>
+              <div className="text-[0.9375rem] font-bold tracking-[-0.01em] leading-tight">tirrex dashboard</div>
               <div className="text-[0.6875rem] font-medium text-[#666] tracking-[0.02em] uppercase mt-0.5">Admin Panel</div>
             </div>
           </div>

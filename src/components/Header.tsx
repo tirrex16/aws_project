@@ -15,6 +15,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [open, setOpen]             = useState(false)
   const [menuExpanded, setMenuExpanded] = useState(false)
+  const [scrolled, setScrolled]     = useState(false)
   const { assets } = useAdmin()
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -26,6 +27,13 @@ export default function Header() {
     update()
     const iv = setInterval(update, 1000)
     return () => clearInterval(iv)
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => {
@@ -66,9 +74,9 @@ export default function Header() {
         />
       )}
 
-      <nav className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-10" style={{ pointerEvents: 'none' }}>
+      <nav className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4 md:px-10" style={{ pointerEvents: 'none' }}>
         <div
-          className={`w-full bg-[#e8e8e8] overflow-hidden ${menuExpanded ? 'rounded-[24px] shadow-[0_8px_48px_rgba(0,0,0,0.12)]' : 'rounded-full shadow-[0_2px_20px_rgba(0,0,0,0.08)]'}`}
+          className={`w-full overflow-hidden transition-[background-color,backdrop-filter,box-shadow] duration-300 ${menuExpanded ? 'rounded-[24px] shadow-[0_8px_48px_rgba(0,0,0,0.12)]' : 'rounded-full shadow-[0_2px_20px_rgba(0,0,0,0.08)]'} ${scrolled && !menuExpanded ? 'bg-[#e8e8e8]/60 backdrop-blur-xl' : 'bg-[#e8e8e8]'}`}
           style={{ maxWidth: 'calc(1560px - 80px)', pointerEvents: 'auto' }}
         >
 
@@ -79,17 +87,14 @@ export default function Header() {
               <span className="text-[0.6875rem] text-[#555] whitespace-nowrap">{time}</span>
             </div>
             <div className="flex items-center gap-6">
-              <span className="text-[0.6875rem] text-[#666] border border-black/15 px-2.5 py-[5px] rounded-[6px] cursor-pointer hover:bg-black/5 transition-colors">
-                (Optional Dark version)
-              </span>
               {['about', 'work', 'blog'].map((id) => (
                 <a key={id} href={`#${id}`} onClick={(e) => { e.preventDefault(); scrollTo(id) }}
-                  className="text-[0.8125rem] text-[#555] tracking-[-0.01em] hover:text-[#0f0f0f] transition-colors capitalize no-underline text-inherit">
+                  className="hidden md:inline text-[0.8125rem] text-[#555] tracking-[-0.01em] hover:text-[#0f0f0f] transition-colors capitalize no-underline text-inherit">
                   {id === 'work' ? 'Projects' : id.charAt(0).toUpperCase() + id.slice(1)}
                 </a>
               ))}
               <a href="#contact" onClick={(e) => { e.preventDefault(); scrollTo('contact') }}
-                className="text-[0.8125rem] font-medium px-[18px] py-[9px] bg-[#0f0f0f] text-white rounded-full tracking-[-0.01em] whitespace-nowrap hover:bg-[#333] transition-colors no-underline">
+                className="hidden sm:inline-flex text-[0.8125rem] font-medium px-[18px] py-[9px] bg-[#0f0f0f] text-white rounded-full tracking-[-0.01em] whitespace-nowrap hover:bg-[#333] transition-colors no-underline">
                 Start a project
               </a>
               <button
@@ -108,7 +113,7 @@ export default function Header() {
             style={{ maxHeight: open ? '640px' : '0', opacity: open ? 1 : 0 }}
           >
             <div className={`px-5 pb-7 pt-1 flex flex-col gap-6 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? 'translate-y-0' : '-translate-y-4'}`}>
-              <div className="grid gap-8" style={{ gridTemplateColumns: '1fr 1.3fr' }}>
+              <div className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-[1fr_1.3fr]">
                 {/* Links */}
                 <div className="flex flex-col">
                   {navLinks.map((link) => (
@@ -123,14 +128,14 @@ export default function Header() {
                   ))}
                 </div>
                 {/* Preview image */}
-                <div className="rounded-xl overflow-hidden relative" style={{ height: 220 }}>
+                <div className="hidden md:block rounded-xl overflow-hidden relative" style={{ height: 220 }}>
                   <img
                     src={resolveAsset(assets, 'hero_bg', '/images/placeholder-photo.svg')}
                     alt="Studio"
                     className="w-full h-full object-cover grayscale"
                   />
                   <div className="absolute inset-0 flex flex-col justify-between p-[14px_18px]" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%)' }}>
-                    <span className="text-[0.8125rem] font-semibold text-white tracking-[-0.01em]">tirrex® Studio</span>
+                    <span className="text-[0.8125rem] font-semibold text-white tracking-[-0.01em]">tirrex®</span>
                     <span className="text-[0.6875rem] text-white/70 self-center">© 2025 All rights reserved</span>
                   </div>
                 </div>
@@ -138,8 +143,8 @@ export default function Header() {
               {/* Contact row */}
               <div className="flex justify-between items-end">
                 <div className="flex flex-col gap-[3px]">
-                  <span className="text-[0.8125rem] text-[#0f0f0f]">hello@tirrex.studio</span>
-                  <span className="text-[0.75rem] text-[#888]">(123) 456-7890</span>
+                  <span className="text-[0.8125rem] text-[#0f0f0f]">mohammedwinston@yahoo.com</span>
+                  <span className="text-[0.75rem] text-[#888]">(+62) 81387346577</span>
                 </div>
                 <div className="flex gap-4">
                   {['Twitter/X', 'Instagram', 'LinkedIn'].map((s) => (
