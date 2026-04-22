@@ -33,7 +33,6 @@ export default function Pricing() {
             Simple, transparent plans that grow with your business.
           </p>
         </div>
-        <span className="text-[0.8125rem] text-[#999999]">(06)</span>
       </div>
 
       {/* Tabs */}
@@ -57,7 +56,7 @@ export default function Pricing() {
           <div>
             <div className="flex justify-between items-start mb-3">
               <span className="text-[0.9375rem] font-semibold tracking-[-0.01em]">{plan.type}</span>
-              <span className="text-[0.8125rem] text-[#999999]">Tirrex®</span>
+              <span className="text-[0.8125rem] text-[#999999]">tirrex®</span>
             </div>
             <div className="text-[2.5rem] font-extrabold tracking-[-0.04em] leading-none mb-1">
               {plan.price} <span className="text-base font-normal text-[#999999]">{plan.period}</span>

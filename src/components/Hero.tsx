@@ -41,7 +41,7 @@ export default function Hero() {
       {/* Skills ticker */}
       <div className="max-w-[1560px] mx-auto flex items-center px-5 md:px-10 overflow-hidden reveal" style={{ height: 44 }}>
         <div className="flex-1 overflow-hidden">
-          <div className="flex items-center w-max" style={{ animation: 'ticker-roll 22s linear infinite' }}>
+          <div className="flex items-center w-max" style={{ animation: 'ticker-roll 50s linear infinite' }}>
             {[...skills, ...skills, ...skills].map((item, i) => (
               <div key={`${item.kind}-${i}`} className="flex items-center mx-5 whitespace-nowrap">
                 {item.kind === 'website' && (

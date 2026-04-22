@@ -24,7 +24,6 @@ export default function Services() {
         {/* Meta */}
         <div className="flex items-center justify-between pb-3 mb-0 border-b border-white/[0.07]">
           <span className="text-[0.8125rem] font-medium text-white/[0.38] tracking-[-0.01em]">Services</span>
-          <span className="text-[0.8125rem] text-white/25">(04)</span>
         </div>
 
         {/* List */}

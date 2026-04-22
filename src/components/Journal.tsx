@@ -22,7 +22,6 @@ export default function Journal() {
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] font-medium text-[#999999] tracking-[-0.01em]">Blog</span>
-        <span className="text-[0.8125rem] text-[#999999]">(05)</span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

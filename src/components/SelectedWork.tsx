@@ -22,7 +22,6 @@ export default function SelectedWork() {
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] text-[#999999]" />
-        <span className="text-[0.8125rem] text-[#999999]">(02)</span>
       </div>
 
       {/* Header */}

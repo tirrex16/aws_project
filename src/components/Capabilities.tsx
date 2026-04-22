@@ -28,7 +28,6 @@ export default function Capabilities() {
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] font-medium text-[#999999] tracking-[-0.01em]">Why us</span>
-        <span className="text-[0.8125rem] text-[#999999]">(03)</span>
       </div>
 
       <h2 className="text-[clamp(1.5rem,3.2vw,2.5rem)] font-bold tracking-[-0.03em] leading-[1.25] mb-7 max-w-[760px] reveal">
