@@ -63,13 +63,19 @@ export default function Capabilities() {
 
         {/* Col 2 row 1 — Rating */}
         <div className="border border-[#e8e8e8] rounded-[20px] p-7 flex flex-col gap-3">
-          <div className="flex items-center">
+          {/* WCAG 1.1.1: aria-label on avatar group, aria-hidden on decorative initials */}
+          <div className="flex items-center" aria-label="Customer avatars">
             {['A', 'B', 'C'].map((l, k) => (
-              <div key={k} className={`w-[34px] h-[34px] rounded-full border-2 border-white overflow-hidden shrink-0${k !== 0 ? ' -ml-[9px]' : ''}`}>
+              <div key={k} aria-hidden="true" className={`w-[34px] h-[34px] rounded-full border-2 border-white overflow-hidden shrink-0${k !== 0 ? ' -ml-[9px]' : ''}`}>
                 <div className="w-full h-full flex items-center justify-center text-[0.6875rem] font-bold text-white" style={{ background: avGradients[k] }}>{l}</div>
               </div>
             ))}
-            <span className="text-sm font-bold ml-2.5">{content.rating.score} <span className="text-[#f59e0b] text-xs">★</span></span>
+            {/* WCAG 1.3.1: Semantic rating — SR reads "4.9 out of 5 stars" */}
+            <span className="text-sm font-bold ml-2.5">
+              {content.rating.score}
+              <span aria-label="out of 5 stars" className="text-[#f59e0b] text-xs" aria-hidden="false"> ★</span>
+              <span className="sr-only">out of 5 stars</span>
+            </span>
           </div>
           <div className="text-[0.8125rem] text-[#999999]">
             <span className="text-[#2f9e44] font-semibold">{content.rating.clientCount}</span> Happy clients worldwide
@@ -78,12 +84,16 @@ export default function Capabilities() {
 
         {/* Col 2 row 2 — Testimonial */}
         <div className="border border-[#e8e8e8] rounded-[20px] p-6">
-          <div className="text-[#f59e0b] text-[0.8125rem] mb-3">★★★★★</div>
+          {/* aria-hidden on decorative stars; aria-label gives SR the semantic value */}
+          <div className="text-[#f59e0b] text-[0.8125rem] mb-3" aria-label="5 out of 5 stars" role="img">
+            <span aria-hidden="true">★★★★★</span>
+          </div>
           <p className="text-[0.8125rem] leading-[1.65] text-[#0f0f0f] mb-4" style={{ margin: '0 0 16px 0' }}>
             {content.testimonial.quote}
           </p>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full shrink-0" style={{ background: 'linear-gradient(135deg,#a78bfa,#7c3aed)' }} />
+            {/* Decorative avatar placeholder */}
+            <div aria-hidden="true" className="w-8 h-8 rounded-full shrink-0" style={{ background: 'linear-gradient(135deg,#a78bfa,#7c3aed)' }} />
             <div>
               <div className="text-[0.8125rem] font-semibold tracking-[-0.01em]">{content.testimonial.name}</div>
               <div className="text-xs text-[#999999]">{content.testimonial.role}</div>
@@ -94,7 +104,8 @@ export default function Capabilities() {
         {/* Col 3 — feature cards */}
         {content.features.map((f, i) => (
           <div key={i} className="border border-[#e8e8e8] rounded-[20px] p-6">
-            <div className="w-8 h-8 bg-[#f5f5f5] rounded-lg flex items-center justify-center text-[0.9375rem] mb-3.5">{f.icon}</div>
+            {/* WCAG 1.1.1: emoji icon needs aria-hidden + text fallback */}
+            <div aria-hidden="true" className="w-8 h-8 bg-[#f5f5f5] rounded-lg flex items-center justify-center text-[0.9375rem] mb-3.5">{f.icon}</div>
             <div className="text-[0.9375rem] font-semibold tracking-[-0.015em] mb-2">{f.title}</div>
             <p className="text-[0.8125rem] text-[#999999] leading-[1.6]" style={{ margin: 0 }}>{f.desc}</p>
           </div>

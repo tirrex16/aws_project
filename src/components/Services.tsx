@@ -26,38 +26,55 @@ export default function Services() {
           <span className="text-[0.8125rem] font-medium text-white/[0.38] tracking-[-0.01em]">Services</span>
         </div>
 
-        {/* List */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+        {/* Accordion List — WCAG 4.1.2: Name, Role, Value */}
+        <div role="list" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
           {items.map((s, i) => {
             const isActive = activeIndex === i
+            const panelId = `service-panel-${i}`
+            const triggerId = `service-trigger-${i}`
             return (
-              <div key={i} style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }} className={`reveal reveal-d${i + 1}`}>
-                <div
-                  className="flex items-center justify-between py-[26px] cursor-pointer hover:opacity-75 transition-opacity"
+              <div key={i} role="listitem" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }} className={`reveal reveal-d${i + 1}`}>
+                {/* WCAG 4.1.2: Use button for interactive element, not div */}
+                <button
+                  id={triggerId}
+                  className="flex items-center justify-between py-[26px] w-full text-left cursor-pointer hover:opacity-75 transition-opacity bg-transparent border-0"
                   onClick={() => setActiveIndex(isActive ? -1 : i)}
+                  aria-expanded={isActive}
+                  aria-controls={panelId}
                 >
                   <span className="font-extrabold tracking-[-0.04em] text-white leading-none" style={{ fontSize: 'clamp(1.75rem, 4.5vw, 3.5rem)' }}>
                     {s.name}
                   </span>
-                  <span className="text-white leading-none transition-all duration-300"
+                  {/* WCAG 1.3.1: aria-hidden on decorative icon */}
+                  <span aria-hidden="true" className="text-white leading-none transition-all duration-300"
                     style={{ fontSize: isActive ? '1.5rem' : 'clamp(1.75rem, 4.5vw, 3.5rem)', opacity: isActive ? 0.5 : 0.18 }}>
                     {isActive ? '×' : s.num}
                   </span>
-                </div>
-                <div className="overflow-hidden transition-all duration-500" style={{ maxHeight: isActive ? '400px' : '0', paddingBottom: isActive ? '32px' : '0' }}>
+                </button>
+
+                {/* WCAG 4.1.2: panel associated via id + aria-labelledby */}
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={triggerId}
+                  hidden={!isActive}
+                  className="overflow-hidden transition-all duration-500"
+                  style={{ maxHeight: isActive ? '400px' : '0', paddingBottom: isActive ? '32px' : '0' }}
+                >
                   <div className="flex items-start gap-5 mb-5">
                     <img
                       src={resolveAsset(assets, `project_${i + 1}`, '/images/placeholder-photo.svg')}
-                      alt={s.name}
+                      alt=""
+                      aria-hidden="true"
                       className="w-20 shrink-0 rounded-lg object-cover grayscale"
                       style={{ height: 60 }}
                     />
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-white tracking-[-0.03em] mb-3">{s.name}</h3>
                       <p className="text-sm text-white/55 leading-[1.65]" style={{ maxWidth: 460, margin: 0 }}>{s.desc}</p>
-                      <div className="flex flex-wrap gap-2 mt-4">
+                      <div className="flex flex-wrap gap-2 mt-4" role="list" aria-label={`${s.name} technologies`}>
                         {s.tags.map((tag, t) => (
-                          <span key={t} className="text-xs font-medium text-white/70 border border-white/15 px-3 py-[5px] rounded-full whitespace-nowrap">
+                          <span key={t} role="listitem" className="text-xs font-medium text-white/70 border border-white/15 px-3 py-[5px] rounded-full whitespace-nowrap">
                             {tag}
                           </span>
                         ))}

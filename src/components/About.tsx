@@ -17,14 +17,14 @@ export default function About() {
   }, [])
 
   return (
-    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="about" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="about" ref={ref} aria-labelledby="about-heading">
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
       </div>
 
       {/* Headline */}
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5 md:gap-10 mb-7">
-        <h2 className="text-[clamp(1.75rem,3.5vw,3rem)] font-bold tracking-[-0.035em] leading-[1.2] max-w-[700px] reveal">
+        <h2 id="about-heading" className="text-[clamp(1.75rem,3.5vw,3rem)] font-bold tracking-[-0.035em] leading-[1.2] max-w-[700px] reveal">
         Everything is designed. So let me be your designer.{' '}
         </h2>
       </div>
@@ -33,8 +33,10 @@ export default function About() {
       <div className="relative rounded-[20px] overflow-hidden reveal">
         <img
           src={resolveAsset(assets, 'showreel', '/public/images/About.png')}
-          alt="Showreel"
+          alt="Mohammed Winston design showreel — branding and web design projects"
           className="w-full  object-cover"
+          loading="lazy"
+          decoding="async"
         />
         <span className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[0.6875rem] text-white/45 tracking-[0.04em] whitespace-nowrap">
           © 2025 tirrex

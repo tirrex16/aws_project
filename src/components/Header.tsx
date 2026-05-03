@@ -74,7 +74,15 @@ export default function Header() {
         />
       )}
 
-      <nav className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4 md:px-10" style={{ pointerEvents: 'none' }}>
+      {/* WCAG 2.4.1: Skip navigation link — first focusable element on page */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[#0f0f0f] focus:text-white focus:rounded-full focus:text-sm focus:font-medium focus:no-underline"
+      >
+        Skip to main content
+      </a>
+
+      <nav aria-label="Primary navigation" className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4 md:px-10" style={{ pointerEvents: 'none' }}>
         <div
           className={`w-full overflow-hidden transition-[background-color,backdrop-filter,box-shadow] duration-300 ${menuExpanded ? 'rounded-[24px] shadow-[0_8px_48px_rgba(0,0,0,0.12)]' : 'rounded-full shadow-[0_2px_20px_rgba(0,0,0,0.08)]'} ${scrolled && !menuExpanded ? 'bg-[#e8e8e8]/60 backdrop-blur-xl' : 'bg-[#e8e8e8]'}`}
           style={{ maxWidth: 'calc(1560px - 80px)', pointerEvents: 'auto' }}
@@ -99,6 +107,9 @@ export default function Header() {
               </a>
               <button
                 onClick={() => setOpen(!open)}
+                aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={open}
+                aria-controls="nav-panel"
                 className={`w-[30px] h-[30px] border border-black/15 bg-white/60 rounded-full flex items-center justify-center text-lg cursor-pointer shrink-0 hover:bg-white/90 transition-all duration-300 ${open ? 'rotate-45' : 'rotate-0'}`}
                 style={{ lineHeight: 1 }}
               >
@@ -109,6 +120,9 @@ export default function Header() {
 
           {/* Expanded panel */}
           <div
+            id="nav-panel"
+            role="region"
+            aria-label="Navigation menu"
             className="overflow-hidden origin-top transition-[max-height,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{ maxHeight: open ? '640px' : '0', opacity: open ? 1 : 0 }}
           >

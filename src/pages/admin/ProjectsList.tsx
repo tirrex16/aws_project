@@ -78,7 +78,7 @@ export default function ProjectsList() {
             <tbody>
               {projects.map((p) => (
                 <tr key={p.id} className="border-b border-[#e8e8e8] last:border-0 hover:bg-[#fafafa] transition-colors group">
-                  <td className="py-4 px-6">
+                  <td className="py-4 px-full">
                     <div className="w-20 h-14 rounded-lg overflow-hidden bg-[#f0f0f0] border border-[#e8e8e8]">
                       {p.img ? (
                         <img src={p.img} alt={p.name} className="w-full h-full object-cover grayscale" />

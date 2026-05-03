@@ -18,7 +18,7 @@ export default function SelectedWork() {
   }, [])
 
   return (
-    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="work" ref={ref}>
+    <section className="max-w-[1560px] mx-auto px-5 md:px-10 py-[42px]" id="work" ref={ref} aria-labelledby="work-heading">
       {/* Meta */}
       <div className="flex items-center justify-between mb-8 reveal">
         <span className="text-[0.8125rem] text-[#999999]" />
@@ -27,7 +27,7 @@ export default function SelectedWork() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-6 gap-4 sm:gap-6 reveal">
         <div>
-          <h2 className="text-[clamp(2.25rem,6vw,5rem)] font-extrabold tracking-[-0.045em] leading-none">
+          <h2 id="work-heading" className="text-[clamp(2.25rem,6vw,5rem)] font-extrabold tracking-[-0.045em] leading-none">
             Selected Work.
           </h2>
           <p className="text-sm text-[#999999] leading-[1.6] mt-2.5 max-w-[260px]">
@@ -55,7 +55,7 @@ export default function SelectedWork() {
             </div>
             <div className="flex justify-between items-start p-[14px_16px_16px]">
               <div>
-                <div className="text-[0.9375rem] font-semibold tracking-[-0.02em] group-hover:text-white transition-colors duration-[400ms]">{p.name}</div>
+                <h3 className="text-[0.9375rem] font-semibold tracking-[-0.02em] group-hover:text-white transition-colors duration-[400ms]">{p.name}</h3>
                 <div className="text-[0.8125rem] text-[#999999] mt-[3px] group-hover:text-white/55 transition-colors duration-[400ms]">{p.type}</div>
               </div>
               <span className="text-[0.8125rem] text-[#999999] group-hover:text-white/45 transition-colors duration-[400ms]">{p.year}</span>

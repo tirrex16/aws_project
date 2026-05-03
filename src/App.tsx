@@ -24,7 +24,8 @@ import JournalEditor from './pages/admin/JournalEditor.tsx'
 function Home() {
   return (
     <>
-      <main>
+      {/* id=main-content is the target for the skip-link in Header (WCAG 2.4.1) */}
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <About />
         <SelectedWork />
@@ -79,7 +80,9 @@ function AppContent() {
         path="/*"
         element={
           <>
-            <Nav />
+            <header role="banner">
+              <Nav />
+            </header>
             <Routes>
               <Route index element={<Home />} />
               <Route path="projects/:id" element={<ProjectDetail />} />

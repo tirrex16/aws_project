@@ -35,6 +35,7 @@ export default function Hero() {
       <div className="flex items-start justify-between max-w-[1560px] mx-auto px-5 md:px-10 pt-8 pb-5 gap-6">
         <h1 className="text-[clamp(72px,13vw,200px)] font-black tracking-[-0.045em] leading-[0.92] text-[#0f0f0f] reveal">
           portfolio
+          <span className="sr-only"> — Mohammed Winston, Freelance Designer &amp; Creative Studio</span>
         </h1>
       </div>
 

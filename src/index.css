@@ -39,8 +39,8 @@ b {
   font-family: 'SF Pro Display Bold', 'SF Pro Display', Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* ============================================= 
-   SCROLL REVEAL — keyframe-based, can't be Tailwind 
+/* =============================================
+   SCROLL REVEAL — keyframe-based, can't be Tailwind
    ============================================= */
 .reveal {
   opacity: 0;
@@ -53,6 +53,59 @@ b {
 .reveal-d2 { transition-delay: 0.13s; }
 .reveal-d3 { transition-delay: 0.20s; }
 .reveal-d4 { transition-delay: 0.27s; }
+
+/* =============================================
+   WCAG 2.3.3 — Respect reduced motion preference
+   Users with vestibular disorders need this
+   ============================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+}
+
+/* =============================================
+   WCAG 1.4.11 — Windows High Contrast mode
+   ============================================= */
+@media (forced-colors: active) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* =============================================
+   SR-ONLY UTILITY — Visually hidden but readable
+   by screen readers (WCAG 1.3.1)
+   ============================================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* =============================================
+   WCAG 2.4.7 — Visible focus indicator
+   ============================================= */
+:focus-visible {
+  outline: 2px solid #3b5bdb;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
 /* =============================================
    GLOBAL KEYFRAMES
